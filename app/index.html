@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Art</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <img id="pixelImage" src="images/pikachu.jpg">
+    <table v-if="pixelImageElement.width > 0" class="canvas-container">
+        <tr v-for="row in pixelImageElement.height" :key="row">
+            <td v-for="column in pixelImageElement.width"
+                class = "noselect"
+                :key="column"
+                @click="paintColor(column-1, row-1)"
+                :style="{background: getCanvasPixelColor(column-1, row-1)}"
+            ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
+        </tr>
+    </table>
+    <div class="colors-container">
+        <ul>
+            <li v-for="(color, index) in colors"
+                class = "noselect"
+                :class="{on: color === selectedColor}"
+                :key="color"
+                @click="selectColor(color)"
+                :style="{background: color}">{{index+1}}</li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
