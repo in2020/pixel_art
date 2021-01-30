@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Art</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+    <table class="canvas-container">
+        <tr v-for="row in numberOfRow" :key="row">
+
+            <td v-for="column in numberOfColumn"
+                :key="column"
+                @click="paintColor(row-1, column-1)"
+                :style="{background: '#'+canvas[row-1][column-1]}"
+            ><span v-if="colors[guide[row-1][column-1]-1] !== canvas[row-1][column-1]">{{guide[row-1][column-1]}}</span></td>
+        </tr>
+    </table>
+    <div class="colors-container">
+        <ul>
+            <li v-for="(color, index) in colors"
+                :key="color"
+                @click="selectColor(color)"
+                :style="{background: '#'+color}">{{index+1}}</li>
+        </ul>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
