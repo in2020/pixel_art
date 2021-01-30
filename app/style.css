@@ -1,6 +1,13 @@
 #pixelImage{
     display: none;
 }
+.index a{
+    cursor: pointer;
+    margin: 3px;
+}
+.index_link_box{
+    margin-bottom: 60px;
+}
 .noselect {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -10,10 +17,14 @@
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
 }
+.canvas-container {
+    touch-action: manipulation;
+}
 .canvas-container td{
-    width:24px;
-    height: 24px;
+    width:7px;
+    height: 7px;
     background: #fff;
+    font-size: 7px;
     border: bisque solid 1px;
     text-align: center;
     cursor: pointer;
@@ -27,15 +38,15 @@
 .colors-container li {
     display: inline-block;
     text-align: center;
-    width:24px;
-    height: 24px;
-    border-radius: 12px;
-    line-height: 24px;
-    margin: 2px;
+    width:8px;
+    height: 8px;
+    font-size: 7px;
+    border-radius: 4px;
+    line-height: 8px;
+    margin: 1px;
     cursor: pointer;
 }
 .colors-container li.on {
-
     width:34px;
     height: 34px;
     border-radius: 17px;

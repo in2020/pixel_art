@@ -3,34 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Pixel Art</title>
-    <link type="text/css" rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="style.css?v=1">
 </head>
 <body>
 <div id="app">
-    <img id="pixelImage" src="images/pikachu.jpg">
-    <table v-if="pixelImageElement.width > 0" class="canvas-container">
-        <tr v-for="row in pixelImageElement.height" :key="row">
-            <td v-for="column in pixelImageElement.width"
-                class = "noselect"
-                :key="column"
-                @click="paintColor(column-1, row-1)"
-                :style="{background: getCanvasPixelColor(column-1, row-1)}"
-            ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
-        </tr>
-    </table>
-    <div class="colors-container">
-        <ul>
-            <li v-for="(color, index) in colors"
-                class = "noselect"
-                :class="{on: color === selectedColor}"
-                :key="color"
-                @click="selectColor(color)"
-                :style="{background: color}">{{index+1}}</li>
-        </ul>
+    <div class="index" v-show="page === 'index'">
+        <h1>Choose Image!</h1>
+        <a v-for="image in images" :key="image.id" @click="selectImage(image)">
+            <img :id="image.id" :src="image.src">
+        </a>
+    </div>
+    <div v-if="page === 'canvas'">
+        <div class="index_link_box">
+            <a href="/" >index</a>
+        </div>
+        <table v-if="canvasElement.width > 0" class="canvas-container">
+            <tr v-for="row in canvasElement.height" :key="row">
+                <td v-for="column in canvasElement.width"
+                    class = "noselect"
+                    :key="column"
+                    v-touch:tap="touchPaintColor(column-1, row-1)"
+                    :style="{background: getCanvasPixelColor(column-1, row-1)}"
+                ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
+            </tr>
+        </table>
+        <div class="colors-container">
+            <ul>
+                <li v-for="(color, index) in colors"
+                    v-show="isCompletedColor(color) === false"
+                    class = "noselect"
+                    :class="{on: color === selectedColor}"
+                    :key="color"
+                    v-touch:tap="touchSelectColor(color)"
+                    :style="{background: color}">{{index+1}}</li>
+            </ul>
+        </div>
+        <div v-if="computedColors.length === 0">
+            Complete!
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="assets/js/vue-touch-events-3.1.0/index.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
-<script src="app.js"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

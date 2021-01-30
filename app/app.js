@@ -1,30 +1,58 @@
 const RGB_DIFFERENCE = 30
 var app = new Vue({
     el: '#app',
-    created(){
-        this.setCanvasElement()
-        this.setColors()
-        this.setGuide()
-        // this.setCanvas()
-    },
     data: {
-        pixelImageElement:document.getElementById('pixelImage'),
+        page: 'index',
         canvasElement: null,
         canvas: [],
         guidePixels: [],
         colors: [],
+        selectedImageId: '',
         selectedColor: 'fff',
-        simplifiedPixels: null
+        simplifiedPixels: null,
+        images: [
+            {src: 'images/pikachu.jpg', id:'image-pika'},
+            {src: 'images/turtle30.jpg', id:'image-turtle'},
+        ]
     },
     computed:{
+        computedColors(){
+          return this.colors.filter(color => this.isCompletedColor(color) === false)
+        },
       computedGuideColorNumber(){
           return (x, y) => {
               const guidePixel = this.getPixelFromGuidePixels(x,y)
               return this.colors.findIndex(color => color === this.getCssRgb(guidePixel)) + 1
           }
-      }
+      },
     },
     methods:{
+        selectImage(image){
+            this.selectedImageId = image.id
+            this.page='canvas'
+
+            this.setCanvasElement()
+            this.setColorsAndGuide()
+        },
+        isCompletedColor(cssRgb){
+            let isCompleted = true
+            const rgbO = this.getRgbObjectFromCssRgb(cssRgb)
+            const sameColorGuidePixels = this.guidePixels.filter(gPixel => this.ieEqualRgb(rgbO, gPixel))
+            sameColorGuidePixels.forEach(gPixel => {
+                const cPixel = this.getPixelFromCanvas(gPixel.x, gPixel.y)
+                if(this.ieEqualRgb(cPixel, gPixel) === false){
+                    isCompleted = false
+                    return false
+                }
+            })
+            return isCompleted
+        },
+        ieEqualRgb(a, b){
+            if(!a || !b){
+                return false
+            }
+            return a.r === b.r && a.g === b.g && a.b === b.b
+        },
         isGuidedColor(x, y){
             const canvasPixel = this.getPixelFromCanvas(x,y)
             if(canvasPixel === undefined){
@@ -48,6 +76,11 @@ var app = new Vue({
         selectColor(color){
           this.selectedColor = color
         },
+        touchSelectColor(color){
+            return (direction, event) =>{
+                this.selectColor(color)
+            }
+        },
         paintColor(x, y){
             const canvasPixel = this.getPixelFromCanvas(x,y)
             const rgbObject = this.getRgbObjectFromCssRgb(this.selectedColor)
@@ -59,6 +92,11 @@ var app = new Vue({
                 canvasPixel.b = rgbObject.b
             }
         },
+        touchPaintColor (x, y) {
+            return (direction, event) =>{
+                this.paintColor(x, y)
+            }
+        },
         getPixelFromCanvas(x, y){
             return _.find(this.canvas, {x, y})
         },
@@ -67,18 +105,19 @@ var app = new Vue({
         },
         setCanvasElement(){
             const canvas = document.createElement('canvas')
-            canvas.width = this.pixelImageElement.width
-            canvas.height = this.pixelImageElement.height
-            canvas.getContext('2d').drawImage(this.pixelImageElement, 0, 0, this.pixelImageElement.width, this.pixelImageElement.height)
+            const pixelImageElement = document.getElementById(this.selectedImageId)
+            canvas.width = pixelImageElement.width
+            canvas.height = pixelImageElement.height
+            canvas.getContext('2d').drawImage(pixelImageElement, 0, 0, pixelImageElement.width, pixelImageElement.height)
             this.canvasElement = canvas
         },
-        setColors(){
+        setColorsAndGuide(){
             let pixelData = null
             let colors = []
             let simplifiedPixel = {}
             let pixels = []
-            for(let y = 0 ; y <this.pixelImageElement.height; y++){
-                for(let x = 0 ; x <this.pixelImageElement.width ; x++){
+            for(let y = 0 ; y <this.canvasElement.height; y++){
+                for(let x = 0 ; x <this.canvasElement.width ; x++){
                     pixelData = this.canvasElement.getContext('2d').getImageData(x, y, 1, 1).data;
                     simplifiedPixel = this.simplifyRGB(pixelData[0], pixelData[1], pixelData[2])
                     simplifiedPixel.x = x
@@ -87,7 +126,7 @@ var app = new Vue({
                 }
             }
 
-            this.simplifiedPixels =this.simplifyPixels(pixels)
+            this.simplifiedPixels =this.simplifyPixelsAndSetGuide(pixels)
 
             this.simplifiedPixels.forEach(pixel => {
                 colors.push(this.getCssRgb(pixel))
@@ -101,7 +140,7 @@ var app = new Vue({
                 b: Math.round(b / 10) * 10,
             }
         },
-        simplifyPixels(pixels){
+        simplifyPixelsAndSetGuide(pixels){
 
             let simplifiedPixels = []
             let isSimilarPixel = false
@@ -149,59 +188,5 @@ var app = new Vue({
         getCssRgb(pixel){
             return 'rgb('+pixel.r+','+pixel.g+','+pixel.b+')'
         },
-        setGuide(){
-
-        },
-        setCanvas(){
-            this.canvas[0].push('fff')
-            this.canvas[0].push('fff')
-            this.canvas[0].push('fff')
-            this.canvas[0].push('fff')
-            this.canvas[0].push('fff')
-
-            this.canvas[1].push('fff')
-            this.canvas[1].push('fff')
-            this.canvas[1].push('fff')
-            this.canvas[1].push('fff')
-            this.canvas[1].push('fff')
-
-            this.canvas[2].push('fff')
-            this.canvas[2].push('fff')
-            this.canvas[2].push('fff')
-            this.canvas[2].push('fff')
-            this.canvas[2].push('fff')
-
-            this.canvas[3].push('fff')
-            this.canvas[3].push('fff')
-            this.canvas[3].push('fff')
-            this.canvas[3].push('fff')
-            this.canvas[3].push('fff')
-
-            this.canvas[4].push('fff')
-            this.canvas[4].push('fff')
-            this.canvas[4].push('fff')
-            this.canvas[4].push('fff')
-            this.canvas[4].push('fff')
-        },
-        rgbToHex(rgb) {
-            // Choose correct separator
-            let sep = rgb.indexOf(",") > -1 ? "," : " ";
-            // Turn "rgb(r,g,b)" into [r,g,b]
-            rgb = rgb.substr(4).split(")")[0].split(sep);
-
-            let r = (+rgb[0]).toString(16),
-                g = (+rgb[1]).toString(16),
-                b = (+rgb[2]).toString(16);
-
-            if (r.length == 1)
-                r = "0" + r;
-            if (g.length == 1)
-                g = "0" + g;
-            if (b.length == 1)
-                b = "0" + b;
-
-            return "#" + r + g + b;
-        },
-
     },
 })
