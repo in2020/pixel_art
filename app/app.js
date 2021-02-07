@@ -201,6 +201,7 @@ var app = new Vue({
             }
 
             if(this.isSelectedColorCompleted){
+                this.selectedColor =''
                 alert('Selected Color is completed!!')
             }
         },
