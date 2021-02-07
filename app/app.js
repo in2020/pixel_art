@@ -10,6 +10,7 @@ var app = new Vue({
         colors: [],
         selectedImageId: '',
         selectedColor: '',
+        selectedColorPixels: [],
         simplifiedPixels: null,
         images: [
             {src: 'images/pikachu.jpg', id:'image-pika'},
@@ -36,9 +37,7 @@ var app = new Vue({
                 if(this.selectedColor === '' ){
                     return this.computedGuidePixelColor(x, y)
                 }else{
-                    const selectedRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
-                    const sameColorGuidePixels =this.getSameColorGuidePixels(selectedRgbO)
-                    return sameColorGuidePixels.find(gPixel => gPixel.x === x && gPixel.y === y) === undefined
+                    return this.selectedColorPixels.find(gPixel => gPixel.x === x && gPixel.y === y) === undefined
                         ? 'rgb(255,255,255)'
                         : this.computedGuidePixelColor(x, y)
                 }
@@ -65,17 +64,36 @@ var app = new Vue({
                     && canvasPixel.b === guidePixel.b
             }
         },
-        computedSelectedColorGuidePixels(){
-            const selectedColorRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
-            return this.guidePixels.filter(gPixel => this.ieEqualRgb(selectedColorRgbO, gPixel))
-        },
+        // computedSelectedColorGuidePixels(){
+        //     const selectedColorRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
+        //     return this.guidePixels.filter(gPixel => this.ieEqualRgb(selectedColorRgbO, gPixel))
+        // },
         getSameColorGuidePixels(){
           return (rgbO) => {
               return this.guidePixels.filter(gPixel => this.ieEqualRgb(rgbO, gPixel))
           }
         },
+        isSelectedColorCompleted(){
+            if(this.selectedColor === ''){
+                return false
+            }
+
+            let isCompleted = true
+            this.selectedColorPixels.forEach(sPixel => {
+                const cPixel = this.getPixelFromCanvas(sPixel.x, sPixel.y)
+                if(!cPixel || this.ieEqualRgb(cPixel, sPixel) === false){
+                    isCompleted = false
+                    return false
+                }
+            })
+            return isCompleted
+        },
         isCompletedColor(){
             return (cssRgb) => {
+                if(!cssRgb){
+                    return false
+                }
+
                 let isCompleted = true
                 const rgbO = this.getRgbObjectFromCssRgb(cssRgb)
                 const sameColorGuidePixels = this.getSameColorGuidePixels(rgbO)
@@ -106,7 +124,7 @@ var app = new Vue({
     methods:{
         isInSelectedColorPixels(x, y){
           let isIn = false
-          this.computedSelectedColorGuidePixels.every(p => {
+          this.selectedColorPixels.every(p => {
               if(p.x === x && p.y === y){
                   isIn = true
                   return false
@@ -138,9 +156,13 @@ var app = new Vue({
         selectColor(color){
             if(this.selectedColor === color){
                 this.selectedColor = ''
-            }else{
-                this.selectedColor = color
+                this.selectedColorPixels = []
+                return
             }
+
+            this.selectedColor = color
+            const selectedColorRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
+            this.selectedColorPixels =  this.guidePixels.filter(gPixel => this.ieEqualRgb(selectedColorRgbO, gPixel))
         },
         touchTest(){
             this.test.touch = this.test.touch ? '' : 'blue'
@@ -178,7 +200,7 @@ var app = new Vue({
                 canvasPixel.isCompleted = this.isInSelectedColorPixels(x, y)
             }
 
-            if(this.isCompletedColor(this.selectedColor)){
+            if(this.isSelectedColorCompleted){
                 alert('Selected Color is completed!!')
             }
         },

@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
     <title>Pixel Art</title>
     <link type="text/css" rel="stylesheet" href="style.css?v=1">
 </head>
@@ -24,7 +23,7 @@
                     class = "noselect canvas-pixel"
                     :key="column"
                     v-touch="touchPaintColor(column-1, row-1)"
-                    v-touch-options="{touchHoldTolerance:1,tapTolerance:100, disableClick: true}"
+                    v-touch-options="{touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
                     :style="{background: computedCanvasPixelColor(column-1, row-1)}"
                 ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
             </tr>
@@ -37,7 +36,7 @@
                     :class="{on: color === selectedColor}"
                     :key="color"
                     v-touch="touchSelectColor(color)"
-                    v-touch-options="{touchHoldTolerance:1,tapTolerance:100, disableClick: true}"
+                    v-touch-options="{touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
                     :style="{background: color}">{{index+1}}</li>
             </ul>
         </div>
