@@ -1,6 +1,13 @@
 #pixelImage{
     display: none;
 }
+.toast_completed{
+    position: fixed;
+    top:20%;
+    left:30%;
+    background: #608383;
+    color: white;
+}
 .index a{
     cursor: pointer;
     margin: 3px;
