@@ -1,5 +1,5 @@
 const RGB_DIFFERENCE = 30
-
+const CANVAS_LOCAL_STORAGE_KEY = 'pixelPaintingCanvas'
 var app = new Vue({
     el: '#app',
     data: {
@@ -130,6 +130,16 @@ var app = new Vue({
     },
 
     methods:{
+        setLocalStorageCanvas(){
+            window.localStorage.setItem(CANVAS_LOCAL_STORAGE_KEY + this.selectedImageId, JSON.stringify(this.canvas))
+        },
+        setCanvasByLocalStorage(){
+            const lsCanvas = window.localStorage.getItem(CANVAS_LOCAL_STORAGE_KEY+ this.selectedImageId)
+            if(lsCanvas === null || confirm('Load saved data?') === false){
+                return
+            }
+            this.canvas = JSON.parse(lsCanvas)
+        },
         isInSelectedColorPixels(x, y){
           let isIn = false
           this.selectedColorPixels.every(p => {
@@ -146,6 +156,7 @@ var app = new Vue({
 
             this.setCanvasElement()
             this.setColorsAndGuide()
+            this.setCanvasByLocalStorage()
         },
         ieEqualRgb(a, b){
             if(!a || !b){
@@ -301,4 +312,9 @@ var app = new Vue({
             return 'rgb('+pixel.r+','+pixel.g+','+pixel.b+')'
         },
     },
+    watch:{
+        canvas(){
+            this.setLocalStorageCanvas()
+        }
+    }
 })

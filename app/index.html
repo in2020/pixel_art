@@ -23,7 +23,7 @@
                     class = "noselect canvas-pixel"
                     :key="column"
                     v-touch="touchPaintColor(column-1, row-1)"
-                    v-touch-options="{touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
+                    v-touch-options="{passive: true, touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
                     :style="{background: computedCanvasPixelColor(column-1, row-1)}"
                 ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
             </tr>
