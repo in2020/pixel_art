@@ -52,12 +52,16 @@ var app = new Vue({
 
         isGuidedColor(){
             return (x, y) => {
+                const guidePixel = this.getPixelFromGuidePixels(x, y)
+
+                if(guidePixel.isBackground){
+                    return true
+                }
+
                 const canvasPixel = this.getPixelFromCanvas(x, y)
                 if (canvasPixel === undefined) {
                     return false
                 }
-
-                const guidePixel = this.getPixelFromGuidePixels(x, y)
 
                 return canvasPixel.r === guidePixel.r
                     && canvasPixel.g === guidePixel.g
@@ -96,6 +100,10 @@ var app = new Vue({
 
                 let isCompleted = true
                 const rgbO = this.getRgbObjectFromCssRgb(cssRgb)
+                if(rgbO.r === 260 && rgbO.g === 260 && rgbO.b ===260){
+                    return true
+                }
+
                 const sameColorGuidePixels = this.getSameColorGuidePixels(rgbO)
                 sameColorGuidePixels.forEach(gPixel => {
                     const cPixel = this.getPixelFromCanvas(gPixel.x, gPixel.y)
@@ -263,6 +271,7 @@ var app = new Vue({
                 })
 
                 if(!isSimilarPixel){
+                    pixel.isBackground = (pixel.r === 260 && pixel.g === 260 && pixel.b === 260)
                     simplifiedPixels.push(pixel)
                     this.guidePixels.push(pixel)
                 }
@@ -273,6 +282,7 @@ var app = new Vue({
                     r: similarPixel.r,
                     g: similarPixel.g,
                     b: similarPixel.b,
+                    isBackground: (similarPixel.r === 260 && similarPixel.g === 260 && similarPixel.b === 260)
                 })
 
             })
