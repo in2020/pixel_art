@@ -12,6 +12,7 @@ var app = new Vue({
         selectedColor: '',
         selectedColorPixels: [],
         simplifiedPixels: null,
+        isFocusColorsContainer: false,
         images: [
             {src: 'images/pikachu.jpg', id:'image-pika'},
             {src: 'images/turtle30.jpg', id:'image-turtle'},
@@ -24,7 +25,7 @@ var app = new Vue({
       computedGuideColorNumber(){
           return (x, y) => {
               const guidePixel = this.getPixelFromGuidePixels(x,y)
-              return this.colors.findIndex(color => color === this.getCssRgb(guidePixel)) + 1
+              return this.colors.findIndex(color => color === this.getCssRgb(guidePixel))
           }
       },
         computedCanvasPixelColor(){
@@ -68,10 +69,6 @@ var app = new Vue({
                     && canvasPixel.b === guidePixel.b
             }
         },
-        // computedSelectedColorGuidePixels(){
-        //     const selectedColorRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
-        //     return this.guidePixels.filter(gPixel => this.ieEqualRgb(selectedColorRgbO, gPixel))
-        // },
         getSameColorGuidePixels(){
           return (rgbO) => {
               return this.guidePixels.filter(gPixel => this.ieEqualRgb(rgbO, gPixel))
@@ -173,6 +170,7 @@ var app = new Vue({
             return guidePixel === undefined ? 'rgb(255,255,255)' : this.getCssRgb(guidePixel)
         },
         selectColor(color){
+            this.isFocusColorsContainer = false
             if(this.selectedColor === color){
                 this.selectedColor = ''
                 this.selectedColorPixels = []
@@ -181,7 +179,7 @@ var app = new Vue({
 
             this.selectedColor = color
             const selectedColorRgbO = this.getRgbObjectFromCssRgb(this.selectedColor)
-            this.selectedColorPixels =  this.guidePixels.filter(gPixel => this.ieEqualRgb(selectedColorRgbO, gPixel))
+            this.selectedColorPixels =  this.getSameColorGuidePixels(selectedColorRgbO)
         },
         touchTest(){
             this.test.touch = this.test.touch ? '' : 'blue'
@@ -197,6 +195,13 @@ var app = new Vue({
             }
         },
         paintColor(x, y){
+            if(this.selectedColor === ''){
+                alert('Choose a color!')
+                this.isFocusColorsContainer = true
+                document.querySelector('#canvasContainer').scrollIntoView({behavior: 'smooth', block: "end", inline: "end"})
+                return
+            }
+
             const canvasPixel = this.getPixelFromCanvas(x,y)
             if(canvasPixel !== undefined && canvasPixel.isCompleted === true){
                 return;
@@ -221,7 +226,6 @@ var app = new Vue({
 
             if(this.isSelectedColorCompleted){
                 this.selectedColor =''
-                alert('Selected Color is completed!!')
             }
         },
         setCanvasElement(){

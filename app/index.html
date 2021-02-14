@@ -8,14 +8,17 @@
 <body>
 <div id="app">
     <div class="index" v-show="page === 'index'">
-        <h1>Choose Image!</h1>
+        <h1>Choose an Image!</h1>
         <a v-for="image in images" :key="image.id" @click="selectImage(image)">
             <img :id="image.id" :src="image.src">
         </a>
     </div>
-    <div v-if="page === 'canvas'">
+    <div id="canvasContainer" v-if="page === 'canvas'">
         <div class="index_link_box">
             <a href="/" >index</a>
+            <div>
+                Zoom in or Zoom out!
+            </div>
         </div>
         <table v-if="canvasElement.width > 0" class="canvas-container">
             <tr v-for="row in canvasElement.height" :key="row">
@@ -28,7 +31,7 @@
                 ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
             </tr>
         </table>
-        <div class="colors-container">
+        <div class="colors-container" :class="{focus:isFocusColorsContainer}">
             <ul>
                 <li v-for="(color, index) in colors"
                     v-show="isCompletedColor(color) === false"
@@ -37,7 +40,7 @@
                     :key="color"
                     v-touch="touchSelectColor(color)"
                     v-touch-options="{touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
-                    :style="{background: color}">{{index+1}}</li>
+                    :style="{background: color}">{{index}}</li>
             </ul>
         </div>
         <div v-if="computedColors.length === 0">

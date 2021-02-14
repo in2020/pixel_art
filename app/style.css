@@ -39,17 +39,20 @@
 .colors-container{
     margin: 60px 0;
 }
+.colors-container.focus{
+    border: red solid 5px;
+}
 .colors-container ul{
     padding: 0;
 }
 .colors-container li {
     display: inline-block;
     text-align: center;
-    width:8px;
-    height: 8px;
-    font-size: 7px;
-    border-radius: 4px;
-    line-height: 8px;
+    width:24px;
+    height: 24px;
+    font-size: 20px;
+    border-radius: 12px;
+    line-height: 20px;
     margin: 1px;
     cursor: pointer;
 }
