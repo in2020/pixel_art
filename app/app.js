@@ -14,8 +14,20 @@ var app = new Vue({
         simplifiedPixels: null,
         isFocusColorsContainer: false,
         images: [
-            {src: 'images/pikachu.jpg', id:'image-pika'},
-            {src: 'images/turtle30.jpg', id:'image-turtle'},
+            {src: 'assets/images/pikachu.jpg', id:'image-pika'},
+            {src: 'assets/images/turtle30.jpg', id:'image-turtle'},
+            {src: 'assets/images/blue-monster.png', id:'blue-monster.png'},
+            {src: 'assets/images/blue-monster2.png', id:'blue-monster2.png'},
+            {src: 'assets/images/cat-monster.png', id:'cat-monster.png'},
+            {src: 'assets/images/flower-monster.png', id:'flower-monster.png'},
+            {src: 'assets/images/green-monster.png', id:'green-monster.png'},
+            {src: 'assets/images/green-monster2.png', id:'green-monster2.png'},
+            {src: 'assets/images/mouse-monster.png', id:'mouse-monster.png'},
+            {src: 'assets/images/muscle-monster.png', id:'muscle-monster.png'},
+            {src: 'assets/images/orage-monster.png', id:'orage-monster.png'},
+            {src: 'assets/images/stone-monster.png', id:'stone-monster.png'},
+            {src: 'assets/images/tiger-monster.png', id:'tiger-monster.png'},
+            {src: 'assets/images/yellow-monster.png', id:'yellow-monster.png'},
         ],
     },
     computed:{
@@ -40,7 +52,7 @@ var app = new Vue({
                 }else{
                     return this.selectedColorPixels.find(gPixel => gPixel.x === x && gPixel.y === y) === undefined
                         ? 'rgb(255,255,255)'
-                        : this.computedGuidePixelColor(x, y)
+                        : 'rgb(220,220,220)'
                 }
             }
         },
@@ -315,10 +327,18 @@ var app = new Vue({
         getCssRgb(pixel){
             return 'rgb('+pixel.r+','+pixel.g+','+pixel.b+')'
         },
+        reset(){
+            this.canvas.splice(0, this.canvas.length)
+        }
     },
     watch:{
         canvas(){
             this.setLocalStorageCanvas()
+        },
+        computedColors(){
+            if(this.computedColors.length === 0){
+                alert('Complete! 👍🏻')
+            }
         }
     }
 })
