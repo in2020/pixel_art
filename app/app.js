@@ -160,6 +160,7 @@ var app = new Vue({
             return isIn
         },
         selectImage(image){
+            window.gtag('event', '클릭', {'event_category' : '픽셀 이미지', 'event_label' : image.id});
             this.selectedImageId = image.id
             this.page='canvas'
 

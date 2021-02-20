@@ -29,7 +29,7 @@
 <div id="app">
     <div class="index" v-show="page === 'index'">
         <h1>Let's color with pixel! Choose an Image!</h1>
-        <a v-for="image in images" :key="image.id" @click="selectImage(image);gtag('event', '클릭', {event_category : '픽셀 이미지', 'event_label' : image.id});">
+        <a v-for="image in images" :key="image.id" @click="selectImage(image);">
             <img :id="image.id" :src="image.src">
         </a>
     </div>
