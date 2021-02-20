@@ -160,7 +160,7 @@ var app = new Vue({
             return isIn
         },
         selectImage(image){
-            history.replaceState(null, '', '?id='+image.id);
+            window.gtag('config', 'G-D47BRF8D3W', {'page_path': '/?id='+image.id});
             this.selectedImageId = image.id
             this.page='canvas'
 
