@@ -23,7 +23,7 @@
 <body>
 <div id="app">
     <div class="index" v-show="page === 'index'">
-        <h1>Choose an Image!</h1>
+        <h1>Let's color with pixel! Choose an Image!</h1>
         <a v-for="image in images" :key="image.id" @click="selectImage(image)">
             <img :id="image.id" :src="image.src">
         </a>
