@@ -16,18 +16,18 @@ var app = new Vue({
         images: [
             {src: 'assets/images/pikachu.jpg', id:'image-pika'},
             {src: 'assets/images/turtle30.jpg', id:'image-turtle'},
-            {src: 'assets/images/blue-monster.png', id:'blue-monster.png'},
-            {src: 'assets/images/blue-monster2.png', id:'blue-monster2.png'},
-            {src: 'assets/images/cat-monster.png', id:'cat-monster.png'},
-            {src: 'assets/images/flower-monster.png', id:'flower-monster.png'},
-            {src: 'assets/images/green-monster.png', id:'green-monster.png'},
-            {src: 'assets/images/green-monster2.png', id:'green-monster2.png'},
-            {src: 'assets/images/mouse-monster.png', id:'mouse-monster.png'},
-            {src: 'assets/images/muscle-monster.png', id:'muscle-monster.png'},
-            {src: 'assets/images/orage-monster.png', id:'orage-monster.png'},
-            {src: 'assets/images/stone-monster.png', id:'stone-monster.png'},
-            {src: 'assets/images/tiger-monster.png', id:'tiger-monster.png'},
-            {src: 'assets/images/yellow-monster.png', id:'yellow-monster.png'},
+            {src: 'assets/images/blue-monster.png', id:'blue-monster'},
+            {src: 'assets/images/blue-monster2.png', id:'blue-monster2'},
+            {src: 'assets/images/cat-monster.png', id:'cat-monster'},
+            {src: 'assets/images/flower-monster.png', id:'flower-monster'},
+            {src: 'assets/images/green-monster.png', id:'green-monster'},
+            {src: 'assets/images/green-monster2.png', id:'green-monster2'},
+            {src: 'assets/images/mouse-monster.png', id:'mouse-monster'},
+            {src: 'assets/images/muscle-monster.png', id:'muscle-monster'},
+            {src: 'assets/images/orage-monster.png', id:'orage-monster'},
+            {src: 'assets/images/stone-monster.png', id:'stone-monster'},
+            {src: 'assets/images/tiger-monster.png', id:'tiger-monster'},
+            {src: 'assets/images/yellow-monster.png', id:'yellow-monster'},
         ],
     },
     computed:{
@@ -160,7 +160,7 @@ var app = new Vue({
             return isIn
         },
         selectImage(image){
-            window.gtag('event', '클릭', {'event_category' : '픽셀 이미지', 'event_label' : image.id});
+            history.replaceState(null, '', '?id='+image.id);
             this.selectedImageId = image.id
             this.page='canvas'
 
