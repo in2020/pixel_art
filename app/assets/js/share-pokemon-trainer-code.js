@@ -5,13 +5,7 @@ var app = new Vue({
     },
     methods: {
         clickShare(){
-            axios({
-                method: 'post',
-                url: '/api/trainer/code/',
-                params: {
-                    trainerCode: this.trainerCode,
-                }
-            }).then(()=>{
+            axios.post('/api/trainer/code/', {trainerCode: this.trainerCode}).then(()=>{
                 alert('Shared!')
             }).catch(() => {
                 alert('Error! Retry!')

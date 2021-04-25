@@ -8,5 +8,7 @@ $db = \ParagonIE\EasyDB\Factory::fromArray([
     'db210424'
 ]);
 
+$body = file_get_contents('php://input');
+$json=json_decode($body, true);
 
-$db->run('INSERT INTO trainer_code SET code =? ', $_POST['trainerCode']);
+$db->run('INSERT INTO trainer_code SET code =? ', $json['trainerCodeG']);
