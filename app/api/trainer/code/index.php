@@ -11,4 +11,4 @@ $db = \ParagonIE\EasyDB\Factory::fromArray([
 $body = file_get_contents('php://input');
 $json=json_decode($body, true);
 
-$db->run('INSERT INTO trainer_code SET code =? ', $json['trainerCodeG']);
+$db->run('INSERT INTO trainer_code SET code =? ', $json['trainerCode']);
