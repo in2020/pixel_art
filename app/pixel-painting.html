@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pixel Color</title>
+    <link type="text/css" rel="stylesheet" href="style.css?v=1">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-D47BRF8D3W"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-D47BRF8D3W');
+    </script>
+    <script data-ad-client="ca-pub-9973059067467245" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <meta name="keyword" content="pixel, art, color, painting">
+    <meta name="description" content="pixel coloring, 픽셀 색칠 놀이">
+    <meta name="author" content="Alien.Hong">
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="http://pixel-color.net/assets/images/yellow-monster.png">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="pixel coloring">
+    <meta property="og:description" content="pixel coloring, 픽셀 색칠 놀이">
+    <meta property="og:image" content="http://pixel-color.net/assets/images/yellow-monster.png">
+    <meta property="og:url" content="http://pixel-color.net">
+    <script data-ad-client="pub-9973059067467245" async src="https://pagead2.googlesyndication.com/
+pagead/js/adsbygoogle.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <div class="index" v-show="page === 'index'">
+        <h1>Let's color with pixel! Choose an Image!</h1>
+        <a v-for="image in images" :key="image.id" @click="selectImage(image);">
+            <img :id="image.id" :src="image.src">
+        </a>
+    </div>
+    <div id="canvasContainer" v-if="page === 'canvas'">
+        <div class="index_link_box">
+            <a href="/" >index</a>
+            <div>
+                Zoom in or Zoom out!
+            </div>
+        </div>
+        <table v-if="canvasElement.width > 0" class="canvas-container">
+            <tr v-for="row in canvasElement.height" :key="row">
+                <td v-for="column in canvasElement.width"
+                    class = "noselect canvas-pixel"
+                    :key="column"
+                    v-touch="touchPaintColor(column-1, row-1)"
+                    v-touch-options="{passive: true, touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
+                    :style="{background: computedCanvasPixelColor(column-1, row-1)}"
+                ><span v-if="isGuidedColor(column-1, row-1) === false">{{computedGuideColorNumber(column-1, row-1)}}</span></td>
+            </tr>
+        </table>
+        <div class="colors-container" :class="{focus:isFocusColorsContainer}">
+            <ul>
+                <li v-for="(color, index) in colors"
+                    v-show="isCompletedColor(color) === false"
+                    class = "noselect"
+                    :class="{on: color === selectedColor}"
+                    :key="color"
+                    v-touch="touchSelectColor(color)"
+                    v-touch-options="{touchHoldTolerance:1,tapTolerance:10, disableClick: true}"
+                    :style="{background: color}">{{index}}</li>
+            </ul>
+        </div>
+        <div v-if="computedColors.length === 0">
+            Complete! 👍🏻 <button @click="reset()">Restart</button>
+        </div>
+
+    </div>
+</div>
+<div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="assets/js/vue-touch-events-3.1.0/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>
+<script src="app.js?v=3"></script>
+</body>
+</html>
