@@ -10,6 +10,14 @@
         <input v-model="trainerCode" type="text" name="code" placeholder="input trainer code!"  />
         <button type="button" @click="clickShare">Share!</button>
     </div>
+    <div class="trainer_codes_container">
+        <ul>
+            <li v-for="trainerCode in trainerCodes" :key="trainerCode.code">
+                {{trainerCode.code}}
+                <input type="checkbox" @click="clickInvalidCode(trainerCode.code)"> Is this code invalid ?
+            </li>
+        </ul>
+    </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js"></script>

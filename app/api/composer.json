@@ -1,5 +1,11 @@
 {
     "require": {
         "paragonie/easydb": "^2"
+    },
+    "autoload": {
+        "classmap": [
+            "src/Common",
+            "src/Pokemon",
+        ]
     }
 }
