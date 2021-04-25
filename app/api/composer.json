@@ -5,7 +5,6 @@
     "autoload": {
         "classmap": [
             "src/Common",
-            "src/Pokemon",
         ]
     }
 }
