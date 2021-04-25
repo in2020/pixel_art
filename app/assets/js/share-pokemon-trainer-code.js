@@ -9,7 +9,7 @@ var app = new Vue({
                 alert('Shared!')
             }).catch(() => {
                 alert('Error! Retry!')
-                window.location.reload()
+                // window.location.reload()
             })
         }
     }
